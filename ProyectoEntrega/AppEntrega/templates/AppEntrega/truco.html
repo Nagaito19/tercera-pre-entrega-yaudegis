@@ -13,7 +13,31 @@ bienvenidos a trucos
             <div class="col-lg-12">           
                             <!--Aquí va lo que cambia, y lo asociado a está vista :) -->
                             <h1>trucos</h1>
-                            <p>Acá va la info de los trucos que me gustan</p>
+                            {% if formulario_truco.errors %}
+                            <p style="color:red;">los datos estan mal. por favor reviselos.</p>
+                            {% endif %}
+
+                            <h4>trucos:</h4>
+                            {% for truco in mi_truco %}
+                            {{truco.nombre}} <br>
+                            {% endfor %}
+                            <hr>
+                            {% if nuevo_truco %}
+
+                            <p>se afrego satisfactoriamente el truco {{nuevo_truco.nombre}({{nuevo_truco.clase}})} </p>
+
+                            <hr>
+
+                            {% endif %}
+                            <form action="{% url 'truco' %}" method="POST">
+                                {% csrf_token %}
+            
+                                <table>
+                                    {{formulario_truco.as_table}}
+                                </table>
+            
+                                <input type="submit" value="Enviar">
+                            <p>Acá va la info de los diferentes trucos de magia</p>
             </div>
         </div>
     </div>

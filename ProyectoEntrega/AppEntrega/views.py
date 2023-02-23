@@ -16,9 +16,9 @@ def estilo(request):
 
         if mi_formulario.is_valid():
             informacion=mi_formulario.cleaned_data
-            estilo=Estilo(nombre=informacion['nombre'])
+            estilo=Estilo(nombre=informacion['estilo'])
             estilo.save()
-            nuevo_estilo={'nombre':informacion['nombre']}
+            nuevo_estilo={'nombre':informacion['estilo']}
             return render(request,'AppEntrega\estilo.html', {'formulario_estilo':mi_estilo,
                                                             'nuevo_estilo':nuevo_estilo,
                                                             'mi_estilo':mi_estilo})
@@ -28,8 +28,23 @@ def estilo(request):
     return render(request, "AppEntrega\estilo.html", {'formulario_estilo':mi_formulario,'mi_estilo':mi_estilo})
 
 def truco (request):
-    return render(request, "AppEntrega/truco.html")
+    mi_truco=Truco.objects.all()
 
+    if request.method =='POST':
+        mi_formulario=TrucoFormulario(request.POST)
+
+        if mi_formulario.is_valid():
+            informacion=mi_formulario.cleaned_data
+            truco=Truco(nombre=informacion['truco'], clase=informacion['clase'])
+            truco.save()
+            nuevo_truco={'nombre':informacion['truco']}
+            return render(request,'AppEntrega\truco.html', {'formulario_truco':mi_truco,
+                                                            'nuevo_truco':nuevo_truco,
+                                                            'mi_truco':mi_truco})
+    else:
+        mi_formulario=TrucoFormulario()
+
+    return render(request, "AppEntrega\truco.html", {'formulario_truco':mi_formulario,'mi_truco':mi_truco})
 def mago (request):
     return render(request, "AppEntrega/mago.html")
 

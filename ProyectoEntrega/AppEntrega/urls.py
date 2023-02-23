@@ -10,7 +10,7 @@ urlpatterns = [
     path("mago", views.mago,name="mago"),
     #path("estilo-formularios/", views.estilo_formularios,name="estilo-formularios"),
     path("mago-formularios/", views.mago_formularios,name="mago-formularios"),
-    path("truco-formularios/", views.truco_formularios,name="truco-formularios"),
+    #path("truco-formularios/", views.truco_formularios,name="truco-formularios"),
     path ("listado-magos/",views.busqueda_magos, name="listado-magos"),
     #path ("buscar/", views.buscar, name="buscar"),
 
