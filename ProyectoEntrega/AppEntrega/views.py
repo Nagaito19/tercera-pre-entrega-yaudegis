@@ -35,7 +35,7 @@ def truco (request):
 
         if mi_formulario.is_valid():
             informacion=mi_formulario.cleaned_data
-            truco=Truco(nombre=informacion['truco'], clase=informacion['clase'])
+            truco=Truco(nombre=informacion['truco'], clase=informacion['truco'])
             truco.save()
             nuevo_truco={'nombre':informacion['truco']}
             return render(request,'AppEntrega\truco.html', {'formulario_truco':mi_truco,
