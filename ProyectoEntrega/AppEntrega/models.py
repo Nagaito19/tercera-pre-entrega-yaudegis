@@ -6,6 +6,8 @@ class Usuario(models.Model):
     nombre= models.CharField(max_length=40)
     apellido= models.CharField(max_length=40)
     email= models.EmailField()
+    def __str__(self):
+        return self.nombre + " " + self.apellido+ " " + self.email
 
 class Truco(models.Model):
     nombre= models.CharField(max_length=40)
@@ -22,3 +24,5 @@ class Mago(models.Model):
         
 class Estilo(models.Model):
     nombre= models.CharField(max_length=40) 
+    def __str__(self):
+        return self.nombre 

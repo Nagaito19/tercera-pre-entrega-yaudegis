@@ -38,7 +38,7 @@ def truco (request):
             truco=Truco(nombre=informacion['truco'], clase=informacion['truco'])
             truco.save()
             nuevo_truco={'nombre':informacion['truco']}
-            return render(request,'AppEntrega\truco.html', {'formulario_truco':mi_truco,
+            return render(request,'AppEntrega/truco.html', {'formulario_truco':mi_truco,
                                                             'nuevo_truco':nuevo_truco,
                                                             'mi_truco':mi_truco})
     else:
@@ -46,7 +46,23 @@ def truco (request):
 
     return render(request, "AppEntrega\truco.html", {'formulario_truco':mi_formulario,'mi_truco':mi_truco})
 def mago (request):
-    return render(request, "AppEntrega/mago.html")
+    mi_mago=Mago.objects.all()
+
+    if request.method =='POST':
+        mi_formulario=MagoFormulario(request.POST)
+
+        if mi_formulario.is_valid():
+            informacion=mi_formulario.cleaned_data
+            mago=Mago(nombre=informacion['nombre'], apellido=informacion['apellido'])
+            mago.save()
+            nuevo_mago={'nombre':informacion['nombre']}
+            return render(request,'AppEntrega/mago.html', {'formulario_mago':mi_mago,
+                                                            'nuevo_mago':nuevo_mago,
+                                                            'mi_mago':mi_mago})
+    else:
+        mi_formulario=MagoFormulario()
+
+    return render(request, "AppEntrega/mago.html", {'formulario_mago':mi_formulario,'mi_mago':mi_mago})
 
 def estilo_formularios(request):
 
@@ -78,7 +94,7 @@ def mago_formularios(request):
 def truco_formularios(request):
     
     if request.method == 'POST':
-        mi_formulario=TrucoFormulario(request.POST)
+        mi_formulario=TrucoFormulario(request.POST)  
 
         if mi_formulario.is_valid():
             informacion=mi_formulario.cleaned_data
@@ -98,3 +114,20 @@ def busqueda_magos(request):
     
     form = BusquedaMago()
     return render(request,'AppEntrega/listado-magos.html', {"listado_magos":magos, 'form': form})
+
+def leerMago(request):
+      mago = Mago.objects.all() #trae todos los mago
+
+      contexto= {"mago":mago} 
+
+      return render(request, "AppEntrega/leerMago.html",contexto)
+
+def eliminarMago(request,mago_nombre,mago_apellido):
+    mago = Mago.objects.get(mago_nombre,mago_apellido)
+    mago.delete()
+
+    mago=Mago.objects.all()
+    contexto={"mago" : Mago}
+    return render(request, "AppEntrega/leerMago.html",contexto)
+
+

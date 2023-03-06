@@ -13,6 +13,8 @@ urlpatterns = [
     #path("truco-formularios/", views.truco_formularios,name="truco-formularios"),
     path ("listado-magos/",views.busqueda_magos, name="listado-magos"),
     #path ("buscar/", views.buscar, name="buscar"),
+    path('leerMago', views.leerMago, name = "LeerMago"),
+    path('eliminarMago/<Mago_nombre><mago_apellido>',views.eliminarMago, name="eliminarMago"  ),
 
 
 
