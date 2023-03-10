@@ -1,6 +1,6 @@
 from django.urls import path, include
 from AppEntrega import views
-
+from django.contrib.auth.views import LogoutView
 
 urlpatterns = [
 
@@ -14,8 +14,12 @@ urlpatterns = [
     path ("listado-magos/",views.busqueda_magos, name="listado-magos"),
     #path ("buscar/", views.buscar, name="buscar"),
     path('leerMago', views.leerMago, name = "LeerMago"),
-    path('eliminarMago/<Mago_nombre><mago_apellido>',views.eliminarMago, name="eliminarMago"  ),
+    path('eliminarMago/<mago_id>/',views.eliminarMago, name="eliminarMago"  ),
+    path('editarMago/<mago_id>/',views.editarMago, name="editarMago"  ),
+    path('login', views.login_request, name="Login"),
+    path('register', views.register, name='Register'),
+    path('logout', LogoutView.as_view(template_name='AppEntrega/logout.html'), name='Logout'),
 
 
 
-]
+] 

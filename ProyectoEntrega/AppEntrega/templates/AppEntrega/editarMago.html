@@ -17,11 +17,14 @@ magos famosos
                 <p>
                     <ul>
                     {%for mago in mago %}
-                        <li>{{mago}} - <a href="{% url 'eliminarMago' mago.id %}">eliminar</a> <a href="{% url 'editarMago' mago.id %}">editar</a></li>
-
+                        <li>{{mago}}</li>
+                        <button>
+                            <a href="{% url 'leerMago' mago.id %}">eliminar</a>
+                            <a href="{% url 'editarMago' mago.id %}">editar</a>
+                        </button>
                     {% endfor %}
 
-                    <a href="mago">agregar otro profesor</a>
+                    <a href="mago.html">agregar otro profesor</a>
                     </ul>
                 </p>
                         

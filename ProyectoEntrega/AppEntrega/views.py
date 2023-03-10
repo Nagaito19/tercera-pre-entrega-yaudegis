@@ -2,6 +2,8 @@ from django.shortcuts import render,redirect
 from AppEntrega.models import *
 from AppEntrega.forms import *
 from django.http import HttpResponse
+from django.contrib.auth.forms import AuthenticationForm, UserCreationForm
+from django.contrib.auth import login, logout, authenticate
 
 
 
@@ -35,7 +37,7 @@ def truco (request):
 
         if mi_formulario.is_valid():
             informacion=mi_formulario.cleaned_data
-            truco=Truco(nombre=informacion['truco'], clase=informacion['truco'])
+            truco=Truco(nombre=informacion['truco'], clase=informacion['clase'])
             truco.save()
             nuevo_truco={'nombre':informacion['truco']}
             return render(request,'AppEntrega/truco.html', {'formulario_truco':mi_truco,
@@ -44,7 +46,7 @@ def truco (request):
     else:
         mi_formulario=TrucoFormulario()
 
-    return render(request, "AppEntrega\truco.html", {'formulario_truco':mi_formulario,'mi_truco':mi_truco})
+    return render(request, "AppEntrega/truco.html", {'formulario_truco':mi_formulario,'mi_truco':mi_truco})
 def mago (request):
     mi_mago=Mago.objects.all()
 
@@ -122,12 +124,69 @@ def leerMago(request):
 
       return render(request, "AppEntrega/leerMago.html",contexto)
 
-def eliminarMago(request,mago_nombre,mago_apellido):
-    mago = Mago.objects.get(mago_nombre,mago_apellido)
+def eliminarMago(request,mago_id):
+    mago = Mago.objects.get(id=mago_id)
     mago.delete()
 
     mago=Mago.objects.all()
-    contexto={"mago" : Mago}
+    contexto={"mago" : mago}
     return render(request, "AppEntrega/leerMago.html",contexto)
 
+def editarMago(request,mago_id):
+    mago=Mago.objects.get(id=mago_id)
 
+    if request.method=='POST':
+        mi_formulario = MagoFormulario(request.POST)
+
+        print(mi_formulario)
+
+        if mi_formulario.is_valid:
+            informacion = mi_formulario.cleaned_data
+
+            mago.nombre = informacion['nombre']
+            mago.apellido = informacion['apellido']
+
+            mago.save()
+
+            return render(request,"AppEntrega/leerMago.html")
+    else:
+        mi_formulario=MagoFormulario(initial={'nombre':mago.nombre, 'apellido':mago.apellido})
+
+    return render (request,"AppEntrega/editarMago.html", {"mi_formulario":mi_formulario,"mago_id":mago_id})
+
+def login_request(request):
+    form=AuthenticationForm()
+
+    if request.method=='POST':
+        form=AuthenticationForm(request,data=request.POST or None)
+
+        if form.is_valid():
+            usuario=form.cleaned_data.get('username')
+            contra=form.cleaned_data.get('password')
+
+            user=authenticate(username=usuario, password=contra)
+
+            if user is not None:
+                login(request,user)
+                return render(request,'AppEntrega/inicio.html', {'mensaje':f'Bienvenido{usuario}'})
+            else: 
+                return render(request,'AppEntrega/login.html', {'mensaje':'error,datos incorrectos', 'form':form})
+        else: 
+            return render(request,'AppEntrega/login.html', {'mensaje':'error,datos incorrectos', 'form':form})
+
+    return render(request,'AppEntrega/login.html', {'form':form})
+
+def register(request):
+    if request.method == 'POST':
+
+        form= MyUserCreationForm(request.POST)
+
+        if form.is_valid():
+            username = form.cleaned_data['username']
+            form.save()
+            return render(request,"AppEntrega/inicio.html", {"mensaje":"Ususario Creado> "})
+        
+    else:
+        form = MyUserCreationForm()
+
+    return render(request,"AppEntrega/registro.html", {"form":form})    

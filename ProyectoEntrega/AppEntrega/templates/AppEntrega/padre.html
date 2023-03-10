@@ -25,7 +25,14 @@
                 <a href="{% url 'mago' %}">mago</a>
                 <a href="{% url 'estilo' %}">estilo</a>
                 <a href="{% url 'truco' %}">truco</a>
-                <a class="btn btn-primary" href="{% url 'inicio' %}">Inicio</a>
+                {% if not request.user.is_authenticated %}
+                <p class="navbar-brand" style="margin-top: 1rem; margin-bottom: 1rem;">
+                    hola{{ user.username }}
+                    <a href="{% url 'AppEntrega/logout' %}">Salir</a>
+                </p>
+                {% else %}
+                <a class="btn btn-primary" href="{% url 'login' %}">login</a>
+                {% endif %}
             </div>
         </nav>
         
